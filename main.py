@@ -1,5 +1,6 @@
 # Projet Blackjack
 from random import randint, shuffle
+from os import _exit
 
 # Cartes et stratégie bots
 card_dic = {"AS": "As de Pique", "2S": "Deux de Pique", "3S": "Trois de Pique", "4S": "Quatre de Pique", "5S": "Cinq de Pique", "6S": "Six de Pique",
@@ -349,8 +350,13 @@ def gagnant2(scores):
 # Variables de départ
 print("~~~~~~Bienvenue dans le jeu du Black jack~~~~~~\n\n")
 
-joueurs = initJoueurs(
-    int(input("----Combien il y aura-t-il de joueurs ?----\n")))
+try:
+    joueurs = initJoueurs(
+        int(input("----Combien il y aura-t-il de joueurs ?----\n")))
+except:
+    print("\rVous avez mis fin au jeu. A bientôt !")
+    exit(1)
+
 pioche = initPioche()
 jeu = True
 liste = []
