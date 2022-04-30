@@ -358,54 +358,58 @@ nb_partie = 1
 
 
 while jeu:
-    scores = premierTour(joueurs, pioche)
-    if liste != []:
-        for i in range(len(joueurs)):
-            joueur = joueurs[i]
-            scores[joueur][1] = liste[i]-scores[joueur][2]
+    try:
+        scores = premierTour(joueurs, pioche)
+        if liste != []:
+            for i in range(len(joueurs)):
+                joueur = joueurs[i]
+                scores[joueur][1] = liste[i]-scores[joueur][2]
 
-    print(f"~~~~~~ Partie n°{nb_partie} ~~~~~~")
-    nb_tour = 1
-    # Création tuples status de manche : 1 en manche, 2 arrête de piocher, 3 a perdu ; J joueur, B bot, C croupier
-    joueEncore = {}
-    for joueur in joueurs:
-        joueEncore[joueur] = ('J', 1)
-    for bot in bots:
-        joueEncore[bot] = ('B', 1)
-    joueEncore['Croupier'] = ('C', 1)
-    manche = True
-    piocheCroupier = True
-    while manche:
-        print(
-            f"La carte du croupier est : {card_dic[scores['Croupier'][1][0]]}")
+        print(f"~~~~~~ Partie n°{nb_partie} ~~~~~~")
+        nb_tour = 1
+        # Création tuples status de manche : 1 en manche, 2 arrête de piocher, 3 a perdu ; J joueur, B bot, C croupier
+        joueEncore = {}
         for joueur in joueurs:
-            if joueEncore[joueur] == ('J', 1):
-                tourJoueur(joueur, nb_tour, scores)
+            joueEncore[joueur] = ('J', 1)
         for bot in bots:
-            if joueEncore[bot] == ('B', 1):
-                tourBot(nb_tour, bot, scores)
-        nb_tour += 1
-        if not(('J', 1) in joueEncore.values() or ('B', 1) in joueEncore.values()):
-            manche = False
+            joueEncore[bot] = ('B', 1)
+        joueEncore['Croupier'] = ('C', 1)
+        manche = True
+        piocheCroupier = True
+        while manche:
+            print(
+                f"La carte du croupier est : {card_dic[scores['Croupier'][1][0]]}")
+            for joueur in joueurs:
+                if joueEncore[joueur] == ('J', 1):
+                    tourJoueur(joueur, nb_tour, scores)
+            for bot in bots:
+                if joueEncore[bot] == ('B', 1):
+                    tourBot(nb_tour, bot, scores)
+            nb_tour += 1
+            if not(('J', 1) in joueEncore.values() or ('B', 1) in joueEncore.values()):
+                manche = False
 
-    nb_tour = 2
-    while piocheCroupier == True:
-        piocheCroupier = tourCroupier(nb_tour, scores)
-        nb_tour += 1
+        nb_tour = 2
+        while piocheCroupier == True:
+            piocheCroupier = tourCroupier(nb_tour, scores)
+            nb_tour += 1
 
-    gagnant2(scores)
-    if len(pioche) < 54:
-        jeu = False
-    nb_partie += 1
-    a = input("Voulez vous continuer ? Oui (o) ou Non (n).\n")
-    a.lower()
-    while not(a in "ouinon"):
-        a = input("Répondez par Oui ou Non")
-    if a == "oui" or a == "o":
-        jeu = True
-    else:
-        jeu = False
-    for joueur in joueurs:
-        liste.append(scores[joueur][1])
-    for bot in bots:
-        liste.append(scores[bot][1])
+        gagnant2(scores)
+        if len(pioche) < 54:
+            jeu = False
+        nb_partie += 1
+        a = input("Voulez vous continuer ? Oui (o) ou Non (n).\n")
+        a.lower()
+        while not(a in "ouinon"):
+            a = input("Répondez par Oui ou Non")
+        if a == "oui" or a == "o":
+            jeu = True
+        else:
+            jeu = False
+        for joueur in joueurs:
+            liste.append(scores[joueur][1])
+        for bot in bots:
+            liste.append(scores[bot][1])
+    except KeyboardInterrupt:
+        print("\rVous avez mis fin au jeu. A bientôt !")
+        exit(1)
