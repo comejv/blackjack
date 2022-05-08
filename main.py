@@ -113,14 +113,14 @@ def initJoueurs(n):
 def initScores(joueurs, s=0, p=100, m=0):
     """Assigne à chaque joueur une liste contenant le score et le portefeuille de chaque joueur, le tout dans un dictionnaire
 
-Args:
-    Joueurs (liste): liste créée avec initJoueurs
+    Args:
+        Joueurs (liste): liste créée avec initJoueurs
         s(entier, optionnel): Score de départ des joueurs. 0 par défaut.
         p(entier, optionnel): Portefeuille de départ des joueurs. 100 par défaut
         m(entier, optionnel): mise de départ des joueurs. 0 par défaut.
 
-Returns:
-    	dictionnaire: Dictionnaire assignant à chaque nom de joueur son score, son portefeuille et sa mise de départ ; crée une liste vide qui contiendra les cartes piochées.
+    Returns:
+        dictionnaire: Dictionnaire assignant à chaque nom de joueur son score, son portefeuille et sa mise de départ ; crée une liste vide qui contiendra les cartes piochées.
     """
     joueur_score = {}
     for i in joueurs:
@@ -135,12 +135,12 @@ Returns:
 def premierTour(joueurs, pioche):
     """initialise 2 cartes par joueurs/bots et distribue une carte au croupier : demande à chacun la mise qu’il souhaite mettre et en choisit une pour les bots en fonction de leur probabilité de gagner. Met à jour les points de chacun en fonction des cartes piochées.
 
-Args:
-    	joueurs (liste): liste des noms des joueurs
-    	pioche (liste): contient toutes les cartes mélangées
+    Args:
+        joueurs (liste): liste des noms des joueurs
+        pioche (liste): contient toutes les cartes mélangées
 
-Returns:
-    	dictionnaire: Nom, scores, portefeuille et cartes piochées de chaque joueur après avoir pioché deux cartes
+    Returns:
+        dictionnaire: Nom, scores, portefeuille et cartes piochées de chaque joueur après avoir pioché deux cartes
     """
     scores = initScores(joueurs)
 
@@ -178,10 +178,10 @@ def tourJoueur(joueur, tour, scores):
     """Rappel le nombre de points et la main de celui dont c’est le tour, demande s’il veut piocher , lui donne son nouveau score et le met à jour dans le tableau de score. Supprime sa mise et son score s’il a perdu (dépassé 21). Met à jour la liste JoueEncore en fonction de si le joueur a repioché, s’est couché, a abandonné ou a bust.
 
 
-Args:
-    	joueur (string): nom du joueur dont c’est le tour
-    	tour (entier): nombre de tour de manche
-    	scores (dictionnaire): assigne à chaque joueur un score
+    Args:
+        joueur (string): nom du joueur dont c’est le tour
+        tour (entier): nombre de tour de manche
+        scores (dictionnaire): assigne à chaque joueur un score
     """
     print(60*"~")
     print(
@@ -206,17 +206,17 @@ Args:
     if scores[joueur][0] > 21:
         print("Vous avez dépassé 21 : vous avez perdu.")
         joueEncore[joueur] = ('J', 3)
-        scores[joueur][2] =0
+        scores[joueur][2] = 0
 
 
 def tourBot(tour, bot, scores):
     """Rappel le nombre de points, fait choisir à l'IA si elle veut piocher ou nom et entre son nouveau score. Supprime sa mise de son score si il à perdu. Utilise la variable strategieDeBase , le score du bot et le score du croupier pour faire son choix.
 
 
-Args:
-    	tour (entier): numéro du tour
-    	bot (string): nom du bot qui joue
-    	scores (dictionnaire): dictionnaire ave score, portefeuille, mise et cartes
+    Args:
+        tour (entier): numéro du tour
+        bot (string): nom du bot qui joue
+        scores (dictionnaire): dictionnaire ave score, portefeuille, mise et cartes
     """
     print(60*'~')
     print(
@@ -249,9 +249,9 @@ Args:
 def tourCroupier(tour, scores):
     """Rappelle la carte choisie du croupier et le laisse choisir de piocher ou non pour réussir à battre les joueurs en fonction de sa probabilité d’avoir une carte qui lui ferait dépasser 21. Dans tous les cas, il ne s’arrête pas avant 17 points.
 
-Args:
-    	tour (entier): nombre de tour de manche
-    	scores (dictionnaire): assigne à chaque joueur un score
+    Args:
+        tour (entier): nombre de tour de manche
+        scores (dictionnaire): assigne à chaque joueur un score
     """
     print(60*"~")
     print(
@@ -279,8 +279,8 @@ Args:
 def gagnant1(scores):
     """Renvoie le nom du gagnant1 (plus proche de 21 sans le dépasser) grâce au tableau de scores trié et transformé en liste
 
-	Args:
-    	scores (dictionnaire): assigne à chaque joueur un score
+    Args:
+        scores (dictionnaire): assigne à chaque joueur un score
     """
     tri_score = sorted(
         scores.items(), key=lambda x: x[1][0])  # On trie selon le score de chacun
@@ -311,8 +311,8 @@ def gagnant1(scores):
 def gagnant2(scores):
     """Écrit les noms des gagnants2 (21>score>croupier) grâce au tableau de scores, et met à jour le portefeuille en fonction des gains
 
-	Args:
-    	scores (dictionnaire): assigne à chaque joueur un score
+    Args:
+        scores (dictionnaire): assigne à chaque joueur un score
     """
     # Ici joueur est un entier, pas le nom du joueur
     if scores['Croupier'][0] > 21:
@@ -339,12 +339,12 @@ def gagnant2(scores):
         if joueur != 'Croupier':
             print(f"{joueur}, votre solde est de {scores[joueur][1]} rubis.")
             if scores[joueur][1] < 10:
-                print(joueur,"votre portefeuille est presque vide. Vous ne pouvez plus jouer à cette table.")
+                print(
+                    joueur, "votre portefeuille est presque vide. Vous ne pouvez plus jouer à cette table.")
                 elimines.append(joueur)
     for joueur in elimines:
         del scores[joueur]
         joueurs.remove(joueur)
-        
 
 
 # Variables de départ
