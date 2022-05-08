@@ -1,9 +1,7 @@
-# Projet Blackjack
 from random import randint, shuffle
-from os import _exit
 
 # Cartes et stratégie bots
-card_dic = {"AS": "As de Pique", "2S": "Deux de Pique", "3S": "Trois de Pique", "4S": "Quatre de Pique", "5S": "Cinq de Pique", "6S": "Six de Pique",
+CARD_DIC = {"AS": "As de Pique", "2S": "Deux de Pique", "3S": "Trois de Pique", "4S": "Quatre de Pique", "5S": "Cinq de Pique", "6S": "Six de Pique",
             "7S": "Sept de Pique", "8S": "Huit de Pique", "9S": "Neuf de Pique", "0S": "Dix de Pique", "JS": "Valet de Pique", "QS": "Dame de Pique", "KS": "Roi de Pique",
             "AD": "As de Carreau", "2D": "Deux de Carreau", "3D": "Trois de Carreau", "4D": "Quatre de Carreau", "5D": "Cinq de Carreau", "6D": "Six de Carreau",
             "7D": "Sept de Carreau", "8D": "Huit de Carreau", "9D": "Neuf de Carreau", "0D": "Dix de Carreau", "JD": "Valet de Carreau", "QD": "Dame de Carreau", "KD": "Roi de Carreau",
@@ -12,7 +10,7 @@ card_dic = {"AS": "As de Pique", "2S": "Deux de Pique", "3S": "Trois de Pique", 
             "AC": "As de Trefle", "2C": "Deux de Trefle", "3C": "Trois de Trefle", "4C": "Quatre de Trefle", "5C": "Cinq de Trefle", "6C": "Six de Trefle",
             "7C": "Sept de Trefle", "8C": "Huit de Trefle", "9C": "Neuf de Trefle", "0C": "Dix de Trefle", "JC": "Valet de Trefle", "QC": "Dame de Trefle", "KC": "Roi de Trefle"}
 # 1 = rester ; 2 tirer
-strategieDeBase = [[1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2],
+STRATEGIE_DE_BASE = [[1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2],
                    [1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2],
                    [1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2],
                    [1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2],
@@ -21,7 +19,7 @@ strategieDeBase = [[1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2],
                    [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
                    [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]]
 
-bots = ['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon']
+BOTS = ['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon']
 
 
 def paquet():
@@ -30,7 +28,7 @@ def paquet():
     Returns:
         [liste]: 52 items
     """
-    return [item for item in card_dic]
+    return [item for item in CARD_DIC]
 
 
 def initPioche(n=6):
@@ -76,7 +74,7 @@ def valeurCarte(carte, joueur, scores):
     elif valeur in "JQK0":
         return 10
     elif valeur == 'A':
-        if joueur == 'Croupier' or joueur in bots:
+        if joueur == 'Croupier' or joueur in BOTS:
             if scores['Croupier'][0]+11 <= 21:
 
                 return 11
@@ -126,14 +124,14 @@ def initScores(joueurs, s=0, p=100, m=0):
     for i in joueurs:
         # Liste vide pour les cartes piochées
         joueur_score[i] = [s, p, m, []]
-    for i in bots:
+    for i in BOTS:
         joueur_score[i] = [s, p, m, []]
     joueur_score['Croupier'] = [s, []]
     return joueur_score
 
 
 def premierTour(joueurs, pioche):
-    """initialise 2 cartes par joueurs/bots et distribue une carte au croupier : demande à chacun la mise qu’il souhaite mettre et en choisit une pour les bots en fonction de leur probabilité de gagner. Met à jour les points de chacun en fonction des cartes piochées.
+    """initialise 2 cartes par joueurs/bots et distribue une carte au croupier : demande à chacun la mise qu’il souhaite mettre et en choisit une pour les BOTS en fonction de leur probabilité de gagner. Met à jour les points de chacun en fonction des cartes piochées.
 
     Args:
         joueurs (liste): liste des noms des joueurs
@@ -159,9 +157,9 @@ def premierTour(joueurs, pioche):
         scores[joueur][0] += valeurCarte(scores[joueur][3][0], joueur, scores)
         scores[joueur][0] += valeurCarte(scores[joueur][3][1], joueur, scores)
         print(
-            f"{joueur}, vous avez {card_dic[scores[joueur][3][0]]} et {card_dic[scores[joueur][3][1]]} comme main de départ. Vous avez {scores[joueur][0]} points \n")
+            f"{joueur}, vous avez {CARD_DIC[scores[joueur][3][0]]} et {CARD_DIC[scores[joueur][3][1]]} comme main de départ. Vous avez {scores[joueur][0]} points \n")
 
-    for bot in bots:
+    for bot in BOTS:
         scores[bot][3].append(piocheCarte(pioche))
         scores[bot][3].append(piocheCarte(pioche))
         scores[bot][0] += valeurCarte(scores[bot][3][0], bot, scores)
@@ -187,7 +185,7 @@ def tourJoueur(joueur, tour, scores):
     print(
         f"C'est le tour {tour} de {joueur}. Vous avez {scores[joueur][0]} points.")
     print("Votre main est : ", sep='')
-    print(*[card_dic[i] for i in scores[joueur][3]], sep=', ')
+    print(*[CARD_DIC[i] for i in scores[joueur][3]], sep=', ')
     piocher = input(
         f"{joueur}, voulez-vous piocher une cartes ? Oui(o) ou Non(n)\n").lower()
     while not(piocher in "ouinon"):
@@ -197,7 +195,7 @@ def tourJoueur(joueur, tour, scores):
         scores[joueur][3].append(piocheCarte(pioche))
         scores[joueur][0] += valeurCarte(scores[joueur][3][-1], joueur, scores)
         print(
-            f"Vous avez pioché {card_dic[scores[joueur][3][-1]]}.\nVotre nouveau score est de {scores[joueur][0]}.")
+            f"Vous avez pioché {CARD_DIC[scores[joueur][3][-1]]}.\nVotre nouveau score est de {scores[joueur][0]}.")
 
     elif piocher == 'n' or piocher == 'non':
         joueEncore[joueur] = ('J', 2)
@@ -210,7 +208,7 @@ def tourJoueur(joueur, tour, scores):
 
 
 def tourBot(tour, bot, scores):
-    """Rappel le nombre de points, fait choisir à l'IA si elle veut piocher ou nom et entre son nouveau score. Supprime sa mise de son score si il à perdu. Utilise la variable strategieDeBase , le score du bot et le score du croupier pour faire son choix.
+    """Rappel le nombre de points, fait choisir à l'IA si elle veut piocher ou nom et entre son nouveau score. Supprime sa mise de son score si il à perdu. Utilise la variable STRATEGIE_DE_BASE , le score du bot et le score du croupier pour faire son choix.
 
 
     Args:
@@ -221,22 +219,22 @@ def tourBot(tour, bot, scores):
     print(60*'~')
     print(
         f"C'est le tour {tour} de {bot}. Il a {scores[bot][0]} points.\nLa main de {bot} est :")
-    print(*[card_dic[i] for i in scores[bot][3]], sep=', ')
+    print(*[CARD_DIC[i] for i in scores[bot][3]], sep=', ')
     if scores[bot][0] <= 8:
         scores[bot][3].append(piocheCarte(pioche))
         scores[bot][0] += valeurCarte(scores[bot][3][-1], bot, scores)
         print(
-            f"{bot} a pioché {card_dic[scores[bot][3][-1]]}.\nSon nouveau score est de {scores[bot][0]}.")
+            f"{bot} a pioché {CARD_DIC[scores[bot][3][-1]]}.\nSon nouveau score est de {scores[bot][0]}.")
         joueEncore[bot] = ("B", 1)
     elif scores[bot][0] >= 17:
         joueEncore[bot] = ("B", 2)
-    elif strategieDeBase[scores[bot][0]-9][scores['Croupier'][0]-1] == 2:
+    elif STRATEGIE_DE_BASE[scores[bot][0]-9][scores['Croupier'][0]-1] == 2:
         scores[bot][3].append(piocheCarte(pioche))
         scores[bot][0] += valeurCarte(scores[bot][3][-1], bot, scores)
         print(
-            f"{bot} a pioché {card_dic[scores[bot][3][-1]]}.\nSon nouveau score est de {scores[bot][0]}.")
+            f"{bot} a pioché {CARD_DIC[scores[bot][3][-1]]}.\nSon nouveau score est de {scores[bot][0]}.")
         joueEncore[bot] = ("B", 1)
-    elif strategieDeBase[scores[bot][0]-9][scores['Croupier'][0]-1] == 1:
+    elif STRATEGIE_DE_BASE[scores[bot][0]-9][scores['Croupier'][0]-1] == 1:
         joueEncore[bot] = ('B', 2)
     if scores[bot][0] == 21:
         joueEncore[bot] = ('B', 2)
@@ -257,7 +255,7 @@ def tourCroupier(tour, scores):
     print(
         f"C'est le tour {tour} du croupier. Il a {scores['Croupier'][0]} points.")
     print("La main du croupier : ", sep='')
-    print(*[card_dic[i] for i in scores["Croupier"][1]], sep=', ')
+    print(*[CARD_DIC[i] for i in scores["Croupier"][1]], sep=', ')
     if scores["Croupier"][0] >= 17:
         joueEncore["Croupier"] = ("C", 2)
         return False
@@ -266,7 +264,7 @@ def tourCroupier(tour, scores):
         scores["Croupier"][0] += valeurCarte(
             scores["Croupier"][1][-1], 'Croupier', scores)
         print(
-            f"Le croupier a pioché {card_dic[scores['Croupier'][1][-1]]}.\nSon nouveau score est de {scores['Croupier'][0]}.")
+            f"Le croupier a pioché {CARD_DIC[scores['Croupier'][1][-1]]}.\nSon nouveau score est de {scores['Croupier'][0]}.")
         return True
     elif scores["Croupier"][0] > 21:
         print("Le Croupier à dépassé 21 : il a perdu.")
@@ -377,18 +375,18 @@ while jeu:
         joueEncore = {}
         for joueur in joueurs:
             joueEncore[joueur] = ('J', 1)
-        for bot in bots:
+        for bot in BOTS:
             joueEncore[bot] = ('B', 1)
         joueEncore['Croupier'] = ('C', 1)
         manche = True
         piocheCroupier = True
         while manche:
             print(
-                f"La carte du croupier est : {card_dic[scores['Croupier'][1][0]]}")
+                f"La carte du croupier est : {CARD_DIC[scores['Croupier'][1][0]]}")
             for joueur in joueurs:
                 if joueEncore[joueur] == ('J', 1):
                     tourJoueur(joueur, nb_tour, scores)
-            for bot in bots:
+            for bot in BOTS:
                 if joueEncore[bot] == ('B', 1):
                     tourBot(nb_tour, bot, scores)
             nb_tour += 1
@@ -414,7 +412,7 @@ while jeu:
             jeu = False
         for joueur in joueurs:
             liste.append(scores[joueur][1])
-        for bot in bots:
+        for bot in BOTS:
             liste.append(scores[bot][1])
     except KeyboardInterrupt:
         print("\rVous avez mis fin au jeu. A bientôt !")
